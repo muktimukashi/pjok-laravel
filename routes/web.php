@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PjokRecordController;
+use App\Http\Controllers\StudentImportController;
 use App\Http\Controllers\UserManagementController;
 use App\Support\PjokMasterData;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/records', [PjokRecordController::class, 'index'])->name('records.index');
     Route::post('/records', [PjokRecordController::class, 'store'])->name('records.store');
     Route::post('/records/sync', [PjokRecordController::class, 'sync'])->name('records.sync');
+    Route::post('/students/import-csv', [StudentImportController::class, 'store'])->name('students.importCsv');
     Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
     Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');
     Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');

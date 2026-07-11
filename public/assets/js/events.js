@@ -177,6 +177,12 @@ document.addEventListener("click", (event) => {
 });
 
 document.addEventListener("change", (event) => {
+  if (event.target.matches("#studentCsvInput")) {
+    importStudentCsv(event.target.files?.[0]);
+    event.target.value = "";
+    return;
+  }
+
   if (event.target.matches("#promotionYear, #promotionFromClass, #promotionToClass, #assignmentYear, #assignmentTeacher, #assignmentClass, #periodPrincipal, #periodStart, #periodEnd, #attendanceClass, .assessment-class")) {
     if (event.target.matches("#promotionFromClass")) {
       const target = document.getElementById("promotionToClass");

@@ -117,7 +117,7 @@
             <div class="field"><label>Email</label><input id="userEmail" type="email" placeholder="email@sekolah.id" /></div>
             <div class="field"><label>Peran</label><select id="userRole"><option value="admin">Admin</option><option value="guru">Guru PJOK</option><option value="kepsek">Kepala Sekolah</option><option value="siswa">Siswa</option><option value="superadmin">Superadmin</option></select></div>
             <div class="field"><label>Status</label><select id="userStatus"><option>Aktif</option><option>Nonaktif</option></select></div>
-            <div class="field"><label>Kata Sandi</label><input id="userKata Sandi" type="password" placeholder="Minimal 6 karakter" /></div>
+            <div class="field"><label>Kata Sandi</label><input id="userPassword" type="password" placeholder="Minimal 6 karakter" /></div>
           </div>
         </div>
       </section>
@@ -174,7 +174,7 @@
 
       <section id="students" class="page">
         <div class="card admin-data-page">
-          <div class="section-head"><div><h3>Data Siswa</h3><p>Kelola data siswa berdasarkan kelas dan status.</p></div><button class="btn btn-primary" type="button" data-admin-new="student">Tambah Siswa</button></div>
+          <div class="section-head"><div><h3>Data Siswa</h3><p>Kelola data siswa berdasarkan kelas dan status.</p></div><div style="display:flex; gap:10px; flex-wrap:wrap;"><label class="btn btn-soft" for="studentCsvInput">Impor CSV</label><input id="studentCsvInput" type="file" accept=".csv,text/csv" class="hidden" /><button class="btn btn-primary" type="button" data-admin-new="student">Tambah Siswa</button></div></div>
           <div id="studentForm" class="master-form hidden"><div class="grid form-grid"><div class="field"><label>NIS</label><input id="studentNisn" /></div><div class="field"><label>Nama Lengkap</label><input id="studentName" /></div><div class="field"><label>Jenis Kelamin</label><select id="studentGender"><option>Laki-laki</option><option>Perempuan</option></select></div><div class="field"><label>Email</label><input id="studentEmail" type="email" /></div><div class="field"><label>Status</label><select id="studentStatus"><option>Aktif</option><option>Nonaktif</option></select></div></div><div class="form-actions-right"><button class="btn btn-soft" type="button" data-admin-close="studentForm">Tutup</button><button class="btn btn-primary" type="button" data-admin-save="student">Simpan Siswa</button></div></div>
           <div class="admin-toolbar"><input id="studentSearch" placeholder="Cari siswa..." data-admin-filter="student" /><select id="studentClassFilter" data-admin-filter="student"><option value="">Semua Kelas</option></select><select id="studentStatusFilter" data-admin-filter="student"><option value="">Semua Status</option><option>Aktif</option><option>Nonaktif</option></select></div>
           <div class="table-wrap"><table><thead><tr><th>No</th><th>NIS</th><th>Nama Lengkap</th><th>Jenis Kelamin</th><th>Email</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="studentTableBody"></tbody></table></div><div id="studentPagination" class="pagination-bar"></div>

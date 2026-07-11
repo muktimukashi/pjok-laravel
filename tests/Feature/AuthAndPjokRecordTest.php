@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -169,6 +170,39 @@ class AuthAndPjokRecordTest extends TestCase
                 'records' => [
                     ['name' => 'Kelas Bocor'],
                 ],
+            ]);
+
+            $response->assertForbidden();
+        }
+    }
+    public function test_admin_can_import_students_from_csv(): void
+    {
+        $user = User::factory()->create(['role' => 'admin']);
+        $csv = UploadedFile::fake()->createWithContent('students.csv', "nis,nama,jenis_kelamin,email,status,kelas,tahun_ajaran,semester\n9001,Ani Sari,Perempuan,ani@example.test,Aktif,Kelas 1A,2025/2026,Ganjil\n9002,Budi Santoso,Laki-laki,budi@example.test,Aktif,Kelas 1A,2025/2026,Ganjil\n");
+
+        $response = $this->actingAs($user)->post('/students/import-csv', [
+            'csv' => $csv,
+        ]);
+
+        $response->assertOk()
+            ->assertJsonPath('imported', 2)
+            ->assertJsonPath('skipped', 0);
+
+        $this->assertDatabaseHas('students', [
+            'student_id' => '9001',
+            'name' => 'Ani Sari',
+            'class_name' => 'Kelas 1A',
+        ]);
+    }
+
+    public function test_non_admin_roles_cannot_import_students_from_csv(): void
+    {
+        foreach (['guru', 'siswa', 'kepsek'] as $role) {
+            $user = User::factory()->create(['role' => $role]);
+            $csv = UploadedFile::fake()->createWithContent('students.csv', "nis,nama\n9001,Ani Sari\n");
+
+            $response = $this->actingAs($user)->post('/students/import-csv', [
+                'csv' => $csv,
             ]);
 
             $response->assertForbidden();

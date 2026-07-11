@@ -240,6 +240,39 @@ function detailAdminRecord(type, index) {
   alert(Object.entries(record).map(([key, value]) => `${key}: ${value}`).join("\n"));
 }
 
+async function importStudentCsv(file) {
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("csv", file);
+
+  try {
+    const response = await fetch("/students/import-csv", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "X-CSRF-TOKEN": window.csrfToken || ""
+      },
+      body: formData
+    });
+
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(result.message || "Import CSV gagal.");
+    }
+
+    studentRecords = result.studentRecords || studentRecords;
+    ensurePlacementRecords();
+    await persistMasterRecords(["placementRecords"]);
+    adminPages.student = 1;
+    renderMasterLists();
+    syncRoleDataViews();
+    alert(`Import selesai. ${result.imported || 0} siswa diproses, ${result.skipped || 0} baris dilewati.`);
+  } catch (error) {
+    console.error(error);
+    alert(error.message || "Import CSV gagal. Periksa format file dan coba lagi.");
+  }
+}
 function saveStudentPlacement() {
   const year = document.getElementById("placementYear")?.value || "2025/2026";
   const className = document.getElementById("placementClass")?.value || "Kelas 5A";
