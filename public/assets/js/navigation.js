@@ -66,6 +66,8 @@ function renderPageData(pageId, force = false) {
   } else if (pageId === "criteriaRecap") {
     renderCriteriaFilterOptions();
     renderCriteriaRecapTable();
+  } else if (["userRole", "addUser", "userList"].includes(pageId)) {
+    renderUserManagement();
   } else if (pageId === "audit") {
     renderAuditLogTable();
   }

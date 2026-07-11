@@ -28,6 +28,7 @@ let principalPeriodRecords = initialData.principalPeriodRecords || [];
 let placementRecords = initialData.placementRecords || [];
 let criteriaRecords = initialData.criteriaRecords || [];
 let assessmentRecords = initialData.assessmentRecords || [];
+let userRecords = initialData.userRecords || [];
 
 const affectiveOptions = [
   "Beriman",
@@ -74,3 +75,4 @@ const defaultCriteria = {
   4: "Cakap",
   5: "Mahir"
 };
+

@@ -84,13 +84,13 @@
       <section id="userRole" class="page">
         <div class="card">
           <div class="section-head">
-            <div><h3>User Role</h3><p>Atur role dan hak akses pengguna sistem.</p></div>
-            <button class="btn btn-primary">Simpan Role</button>
+            <div><h3>User Role</h3><p>Atur role dan status akses pengguna sistem.</p></div>
+            <button class="btn btn-primary" type="button" data-user-role-save>Simpan Role</button>
           </div>
           <div class="grid form-grid">
-            <div class="field"><label>Pilih User</label><select><option>Superadmin</option><option>Admin</option><option>Guru PJOK</option><option>Kepala Sekolah</option><option>Siswa</option></select></div>
-            <div class="field"><label>Role</label><select><option>Superadmin</option><option>Admin</option><option>Guru PJOK</option><option>Kepala Sekolah</option><option>Siswa</option></select></div>
-            <div class="field"><label>Status Akses</label><select><option>Aktif</option><option>Nonaktif</option></select></div>
+            <div class="field"><label>Pilih User</label><select id="roleUserSelect"></select></div>
+            <div class="field"><label>Role</label><select id="roleUserRole"><option value="superadmin">Superadmin</option><option value="admin">Admin</option><option value="guru">Guru PJOK</option><option value="kepsek">Kepala Sekolah</option><option value="siswa">Siswa</option></select></div>
+            <div class="field"><label>Status Akses</label><select id="roleUserStatus"><option>Aktif</option><option>Nonaktif</option></select></div>
           </div>
         </div>
       </section>
@@ -98,13 +98,16 @@
       <section id="addUser" class="page">
         <div class="card">
           <div class="section-head">
-            <div><h3>Add User</h3><p>Tambah akun baru untuk guru, kepala sekolah, atau siswa.</p></div>
-            <button class="btn btn-primary">Tambah User</button>
+            <div><h3>Add User</h3><p>Tambah akun baru untuk admin, guru, kepala sekolah, atau siswa.</p></div>
+            <button class="btn btn-primary" type="button" data-user-save>Tambah User</button>
           </div>
           <div class="grid form-grid">
-            <div class="field"><label>Nama Lengkap</label><input placeholder="Nama pengguna" /></div>
-            <div class="field"><label>Email</label><input placeholder="email@sekolah.id" /></div>
-            <div class="field"><label>Role</label><select><option>Admin</option><option>Guru PJOK</option><option>Kepala Sekolah</option><option>Siswa</option></select></div>
+            <input id="userFormId" type="hidden" />
+            <div class="field"><label>Nama Lengkap</label><input id="userName" placeholder="Nama pengguna" /></div>
+            <div class="field"><label>Email</label><input id="userEmail" type="email" placeholder="email@sekolah.id" /></div>
+            <div class="field"><label>Role</label><select id="userRole"><option value="admin">Admin</option><option value="guru">Guru PJOK</option><option value="kepsek">Kepala Sekolah</option><option value="siswa">Siswa</option><option value="superadmin">Superadmin</option></select></div>
+            <div class="field"><label>Status</label><select id="userStatus"><option>Aktif</option><option>Nonaktif</option></select></div>
+            <div class="field"><label>Password</label><input id="userPassword" type="password" placeholder="Minimal 6 karakter" /></div>
           </div>
         </div>
       </section>
@@ -113,22 +116,18 @@
         <div class="card">
           <div class="section-head">
             <div><h3>User List</h3><p>Daftar akun pengguna yang terdaftar di sistem.</p></div>
-            <button class="btn btn-soft">Refresh</button>
+            <button class="btn btn-soft" type="button" data-user-refresh>Refresh</button>
           </div>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr><th>No</th><th>Nama</th><th>Email</th><th>Role</th><th>Status</th><th>Aksi</th></tr>
               </thead>
-              <tbody>
-                <tr><td>1</td><td>Super Admin</td><td>superadmin@madep.id</td><td>Superadmin</td><td><span class="badge badge-green">Aktif</span></td><td><button class="btn btn-outline btn-sm">Edit</button> <button class="btn btn-soft btn-sm">Reset</button> <button class="btn btn-red btn-sm">Hapus</button></td></tr>
-                <tr><td>2</td><td>Guru PJOK</td><td>guru@madep.id</td><td>Guru PJOK</td><td><span class="badge badge-green">Aktif</span></td><td><button class="btn btn-outline btn-sm">Edit</button> <button class="btn btn-soft btn-sm">Reset</button> <button class="btn btn-red btn-sm">Hapus</button></td></tr>
-              </tbody>
+              <tbody id="userTableBody"></tbody>
             </table>
           </div>
         </div>
       </section>
-
       <section id="teachers" class="page">
         <div class="card admin-data-page">
           <div class="section-head"><div><h3>Data Guru</h3><p>Kelola data guru aktif.</p></div><button class="btn btn-primary" type="button" data-admin-new="teacher">Tambah Guru</button></div>
@@ -551,6 +550,7 @@
   <script src="{{ asset('assets/js/roster.js') }}"></script>
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/admin.js') }}"></script>
+  <script src="{{ asset('assets/js/user-management.js') }}"></script>
   <script src="{{ asset('assets/js/audit.js') }}"></script>
   <script src="{{ asset('assets/js/navigation.js') }}"></script>
   <script src="{{ asset('assets/js/auth.js') }}"></script>

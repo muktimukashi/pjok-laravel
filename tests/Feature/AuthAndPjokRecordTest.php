@@ -78,5 +78,44 @@ class AuthAndPjokRecordTest extends TestCase
         ]);
         $this->assertDatabaseCount('classes', 2);
     }
+
+    public function test_superadmin_can_create_user(): void
+    {
+        $user = User::factory()->create([
+            'role' => 'superadmin',
+        ]);
+
+        $response = $this->actingAs($user)->post('/users', [
+            'name' => 'New Teacher',
+            'email' => 'new.teacher@example.com',
+            'role' => 'guru',
+            'status' => 'Aktif',
+            'password' => 'password',
+        ]);
+
+        $response->assertCreated();
+        $this->assertDatabaseHas('users', [
+            'email' => 'new.teacher@example.com',
+            'role' => 'guru',
+            'status' => 'Aktif',
+        ]);
+    }
+
+    public function test_admin_cannot_manage_users(): void
+    {
+        $user = User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        $response = $this->actingAs($user)->post('/users', [
+            'name' => 'Blocked User',
+            'email' => 'blocked@example.com',
+            'role' => 'siswa',
+            'status' => 'Aktif',
+            'password' => 'password',
+        ]);
+
+        $response->assertForbidden();
+    }
 }
 
