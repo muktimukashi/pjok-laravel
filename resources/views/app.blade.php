@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="{{ asset('assets/style.css') }}" />
 </head>
 <body>
+  @php($currentRole = auth()->user()->role)
   <section id="appPage" class="app-shell">
     <aside id="sidebar" class="sidebar">
       <div class="app-logo">
@@ -23,10 +24,13 @@
 
       <div class="menu-label">Menu Utama</div>
       <div class="menu-item active" data-page="dashboard">Dashboard</div>
+      @if($currentRole === 'superadmin')
       <div class="menu-item superadmin-menu hidden" data-page="userRole">User Role</div>
       <div class="menu-item superadmin-menu hidden" data-page="addUser">Add User</div>
       <div class="menu-item superadmin-menu hidden" data-page="userList">User List</div>
       <div class="menu-item superadmin-menu hidden" data-page="audit">Audit Log</div>
+      @endif
+      @if($currentRole === 'guru')
       <div class="menu-item guru-menu hidden" data-page="attendance">Absensi Siswa</div>
       <div class="menu-item guru-menu hidden" data-page="assessmentPlan">Rencana Asesmen</div>
       <div class="menu-group guru-menu hidden">Asesmen</div>
@@ -36,6 +40,11 @@
       <div class="menu-group guru-menu hidden">Rekapitulasi</div>
       <div class="menu-item menu-sub guru-menu hidden" data-page="recap">Nilai Siswa</div>
       <div class="menu-item menu-sub guru-menu hidden" data-page="criteriaRecap">Kriteria Penilaian</div>
+      @endif
+      @if($currentRole === 'siswa')
+      <div class="menu-item menu-sub guru-menu hidden" data-page="recap">Nilai Siswa</div>
+      @endif
+      @if($currentRole === 'admin')
       <div class="menu-group admin-menu hidden">Master Data</div>
       <div class="menu-item menu-sub admin-menu hidden" data-page="students">Data Siswa</div>
       <div class="menu-item menu-sub admin-menu hidden" data-page="teachers">Data Guru</div>
@@ -48,6 +57,7 @@
       <div class="menu-item menu-sub admin-menu hidden" data-page="teacherAssignment">Penugasan Guru PJOK</div>
       <div class="menu-item menu-sub admin-menu hidden" data-page="principalPeriod">Periode Kepala Sekolah</div>
       <div class="menu-item admin-menu hidden" data-page="settings">Pengaturan</div>
+      @endif
     </aside>
 
     <main class="main">
@@ -529,15 +539,12 @@
   <form id="logoutForm" method="POST" action="{{ route('logout') }}" style="display:none;">
     @csrf
   </form>
-  @php
-    $authUser = [
+  <script>
+    window.authUser = {{ Illuminate\Support\Js::from([
       'name' => auth()->user()->name,
       'email' => auth()->user()->email,
       'role' => auth()->user()->role,
-    ];
-  @endphp
-  <script>
-    window.authUser = {{ Illuminate\Support\Js::from($authUser) }};
+    ]) }};
     window.initialData = {{ Illuminate\Support\Js::from($initialData ?? []) }};
     window.csrfToken = {{ Illuminate\Support\Js::from(csrf_token()) }};
   </script>

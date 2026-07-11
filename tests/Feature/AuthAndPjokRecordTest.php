@@ -117,5 +117,62 @@ class AuthAndPjokRecordTest extends TestCase
 
         $response->assertForbidden();
     }
+    public function test_dashboard_menu_is_limited_for_each_role(): void
+    {
+        $expectations = [
+            'superadmin' => [
+                'see' => ['data-page="userRole"', 'data-page="addUser"', 'data-page="userList"', 'data-page="audit"'],
+                'dontSee' => ['data-page="students"', 'data-page="attendance"', 'data-page="recap"'],
+            ],
+            'admin' => [
+                'see' => ['data-page="students"', 'data-page="teachers"', 'data-page="classes"', 'data-page="settings"'],
+                'dontSee' => ['data-page="userRole"', 'data-page="attendance"', 'data-page="recap"'],
+            ],
+            'guru' => [
+                'see' => ['data-page="attendance"', 'data-page="assessmentPlan"', 'data-page="recap"', 'data-page="criteriaRecap"'],
+                'dontSee' => ['data-page="userRole"', 'data-page="students"', 'data-page="settings"'],
+            ],
+            'siswa' => [
+                'see' => ['data-page="recap"'],
+                'dontSee' => ['data-page="userRole"', 'data-page="students"', 'data-page="attendance"', 'data-page="criteriaRecap"'],
+            ],
+            'kepsek' => [
+                'see' => [],
+                'dontSee' => ['data-page="userRole"', 'data-page="students"', 'data-page="attendance"', 'data-page="recap"'],
+            ],
+        ];
+
+        foreach ($expectations as $role => $expected) {
+            $user = User::factory()->create(['role' => $role]);
+            $response = $this->actingAs($user)->get('/dashboard');
+
+            $response->assertOk();
+            $response->assertSee('data-page="dashboard"', false);
+
+            foreach ($expected['see'] as $menuMarker) {
+                $response->assertSee($menuMarker, false);
+            }
+
+            foreach ($expected['dontSee'] as $menuMarker) {
+                $response->assertDontSee($menuMarker, false);
+            }
+        }
+    }
+
+    public function test_non_admin_roles_cannot_sync_master_records(): void
+    {
+        foreach (['guru', 'siswa', 'kepsek'] as $role) {
+            $user = User::factory()->create(['role' => $role]);
+
+            $response = $this->actingAs($user)->post('/records/sync', [
+                'type' => 'classRecords',
+                'records' => [
+                    ['name' => 'Kelas Bocor'],
+                ],
+            ]);
+
+            $response->assertForbidden();
+        }
+    }
 }
 
