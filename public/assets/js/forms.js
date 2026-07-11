@@ -59,6 +59,7 @@ function addMasterRecord(type) {
     toggleMasterForm("teacherForm");
     renderMasterLists();
     renderDashboardContent();
+    persistMasterRecords(["teacherRecords"]);
     return;
   }
 
@@ -74,6 +75,7 @@ function addMasterRecord(type) {
       classRecords.push({ name: className });
     }
 
+    persistMasterRecords(["classRecords", "studentRecords", "criteriaRecords", "assessmentRecords"]);
     resetClassForm();
     toggleMasterForm("classForm");
     renderMasterLists();
@@ -102,6 +104,7 @@ function addMasterRecord(type) {
     renderMasterLists();
     renderDashboardContent();
     renderRecapTable();
+    persistMasterRecords(["studentRecords", "placementRecords"]);
     return;
   }
 }
@@ -161,18 +164,23 @@ function saveAdminRecord(type) {
     } else {
       studentRecords.push({ ...record, className: classRecords[0]?.name || "-", year: "2025/2026", semester: "Ganjil", attendance: 0, cognitive: 0, affective: 0, psychomotor: 0, finalScore: 0, predicate: "Aktif", predicateClass: "badge-green" });
     }
+    ensurePlacementRecords();
+    persistMasterRecords(["studentRecords", "placementRecords"]);
   } else if (type === "teacher") {
     const record = { nip: getInputValue("teacherNip"), name: getInputValue("teacherName"), gender: getInputValue("teacherGender"), email: getInputValue("teacherEmail"), status: getInputValue("teacherStatus") || "Aktif", role: "Guru PJOK" };
     if (!record.nip || !record.name) return;
     editingAdmin.teacher !== null ? teacherRecords[editingAdmin.teacher] = record : teacherRecords.push(record);
+    persistMasterRecords(["teacherRecords"]);
   } else if (type === "principal") {
     const record = { nip: getInputValue("principalNip"), name: getInputValue("principalName"), gender: getInputValue("principalGender"), email: getInputValue("principalEmail"), status: getInputValue("principalStatus") || "Aktif" };
     if (!record.nip || !record.name) return;
     editingAdmin.principal !== null ? principalRecords[editingAdmin.principal] = record : principalRecords.push(record);
+    persistMasterRecords(["principalRecords"]);
   } else if (type === "year") {
     const record = { name: getInputValue("yearName"), status: getInputValue("yearStatus") || "Aktif" };
     if (!record.name) return;
     editingAdmin.year !== null ? academicYearRecords[editingAdmin.year] = record : academicYearRecords.push(record);
+    persistMasterRecords(["academicYearRecords"]);
   }
   resetAdminForm(type);
   setAdminFormVisible(type, false);
@@ -188,6 +196,7 @@ function deleteAdminRecord(type, index) {
         if (placementRecords[i].studentId === removed.id) placementRecords.splice(i, 1);
       }
     }
+    persistMasterRecords(["studentRecords", "placementRecords"]);
   }
   if (type === "teacher") {
     const [removed] = teacherRecords.splice(index, 1);
@@ -196,6 +205,7 @@ function deleteAdminRecord(type, index) {
         if (teacherAssignmentRecords[i].teacherNip === removed.nip) teacherAssignmentRecords.splice(i, 1);
       }
     }
+    persistMasterRecords(["teacherRecords", "teacherAssignmentRecords"]);
   }
   if (type === "principal") {
     const [removed] = principalRecords.splice(index, 1);
@@ -204,10 +214,24 @@ function deleteAdminRecord(type, index) {
         if (principalPeriodRecords[i].principalNip === removed.nip) principalPeriodRecords.splice(i, 1);
       }
     }
+    persistMasterRecords(["principalRecords", "principalPeriodRecords"]);
   }
-  if (type === "year") academicYearRecords.splice(index, 1);
+  if (type === "year") {
+    academicYearRecords.splice(index, 1);
+    persistMasterRecords(["academicYearRecords"]);
+  }
   renderMasterLists();
   syncRoleDataViews();
+}
+
+function deleteClassRecord(index) {
+  const record = classRecords[index];
+  if (!record) return;
+  classRecords.splice(index, 1);
+  renameClassReferences(record.name, classRecords[0]?.name || "-");
+  renderMasterLists();
+  renderDashboardContent();
+  persistMasterRecords(["classRecords", "studentRecords", "criteriaRecords", "assessmentRecords"]);
 }
 
 function detailAdminRecord(type, index) {
@@ -228,6 +252,7 @@ function saveStudentPlacement() {
   });
   renderMasterLists();
   syncRoleDataViews();
+  persistMasterRecords(["placementRecords", "studentRecords"]);
 }
 
 function saveClassPromotion() {
@@ -246,6 +271,7 @@ function saveClassPromotion() {
   });
   renderMasterLists();
   syncRoleDataViews();
+  persistMasterRecords(["studentRecords", "placementRecords"]);
 }
 function saveTeacherAssignment() {
   const year = document.getElementById("assignmentYear")?.value || "2025/2026";
@@ -257,6 +283,7 @@ function saveTeacherAssignment() {
   if (existing) existing.teacherNip = teacher.nip;
   else teacherAssignmentRecords.push({ teacherNip: teacher.nip, className, year, status: "Aktif" });
   renderAcademicMenus();
+  persistMasterRecords(["teacherAssignmentRecords"]);
 }
 
 function savePrincipalPeriod() {
@@ -269,5 +296,6 @@ function savePrincipalPeriod() {
   if (existing) { existing.startYear = startYear; existing.endYear = endYear; existing.status = "Aktif"; }
   else principalPeriodRecords.push({ principalNip: principal.nip, startYear, endYear, status: "Aktif" });
   renderAcademicMenus();
+  persistMasterRecords(["principalPeriodRecords"]);
 }
 

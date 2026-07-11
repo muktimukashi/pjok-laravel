@@ -540,6 +540,7 @@
   <script>
     window.authUser = {{ Illuminate\Support\Js::from($authUser) }};
     window.initialData = {{ Illuminate\Support\Js::from($initialData ?? []) }};
+    window.csrfToken = {{ Illuminate\Support\Js::from(csrf_token()) }};
   </script>
   <script src="{{ asset('assets/js/data.js') }}"></script>
   <script src="{{ asset('assets/js/state.js') }}"></script>

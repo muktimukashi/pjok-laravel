@@ -157,10 +157,11 @@ function renderMasterLists() {
   const assessmentClassSelects = document.querySelectorAll(".assessment-class");
   const attendanceClassSelect = document.getElementById("attendanceClass");
   const studentClassFilter = document.getElementById("studentClassFilter");
-  if (classTableBody) classTableBody.innerHTML = classRecords.map((kelas, index) => `<tr><td>${index + 1}</td><td>${kelas.name}</td><td><button class="btn btn-outline btn-sm" type="button" data-edit-class="${index}">Edit</button> <button class="btn btn-red btn-sm" type="button">Hapus</button></td></tr>`).join("");
+  if (classTableBody) classTableBody.innerHTML = classRecords.map((kelas, index) => `<tr><td>${index + 1}</td><td>${kelas.name}</td><td><button class="btn btn-outline btn-sm" type="button" data-edit-class="${index}">Edit</button> <button class="btn btn-red btn-sm" type="button" data-delete-class="${index}">Hapus</button></td></tr>`).join("");
   const classOptions = classRecords.map((kelas) => `<option>${kelas.name}</option>`).join("");
   assessmentClassSelects.forEach((select) => { const current = select.value; select.innerHTML = classOptions; if (current) select.value = current; });
   if (attendanceClassSelect) { const current = attendanceClassSelect.value; attendanceClassSelect.innerHTML = classOptions; if (current) attendanceClassSelect.value = current; }
   if (studentClassFilter) { const current = studentClassFilter.value; studentClassFilter.innerHTML = `<option value="">Semua Kelas</option>${classOptions}`; studentClassFilter.value = current; }
   syncAssessmentPlanOptions();
 }
+

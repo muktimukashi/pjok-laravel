@@ -79,6 +79,7 @@ document.addEventListener("click", (event) => {
   if (placementDeleteButton) {
     placementRecords.splice(Number(placementDeleteButton.dataset.placementDelete), 1);
     renderMasterLists();
+    persistMasterRecords(["placementRecords"]);
     return;
   }
   const toggleButton = event.target.closest("[data-toggle-form]");
@@ -92,6 +93,12 @@ document.addEventListener("click", (event) => {
     editClassRecord(Number(editClassButton.dataset.editClass));
     return;
   }
+  const deleteClassButton = event.target.closest("[data-delete-class]");
+  if (deleteClassButton) {
+    deleteClassRecord(Number(deleteClassButton.dataset.deleteClass));
+    return;
+  }
+
   const addButton = event.target.closest("[data-add-master]");
   if (addButton) {
     addMasterRecord(addButton.dataset.addMaster);

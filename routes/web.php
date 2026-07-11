@@ -15,5 +15,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/records', [PjokRecordController::class, 'index'])->name('records.index');
     Route::post('/records', [PjokRecordController::class, 'store'])->name('records.store');
+    Route::post('/records/sync', [PjokRecordController::class, 'sync'])->name('records.sync');
 });
 

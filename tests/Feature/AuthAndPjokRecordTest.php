@@ -57,4 +57,27 @@ class AuthAndPjokRecordTest extends TestCase
         $response->assertRedirect('/');
         $this->assertTrue(Auth::check());
     }
+
+    public function test_admin_can_sync_master_records(): void
+    {
+        $user = User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        $response = $this->actingAs($user)->post('/records/sync', [
+            'type' => 'classRecords',
+            'records' => [
+                ['name' => 'Kelas 1A'],
+                ['name' => 'Kelas 1B'],
+            ],
+        ]);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('pjok_records', [
+            'type' => 'classRecords',
+            'code' => 'Kelas 1A',
+        ]);
+        $this->assertDatabaseCount('pjok_records', 2);
+    }
 }
+

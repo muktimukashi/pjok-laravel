@@ -131,7 +131,7 @@ class PjokMasterData
         return compact('classRecords', 'studentRecords', 'teacherRecords', 'principalRecords', 'academicYearRecords', 'teacherAssignmentRecords', 'principalPeriodRecords', 'placementRecords', 'criteriaRecords', 'assessmentRecords');
     }
 
-    private static function recordCode(string $type, array $payload, int $index): string
+    public static function recordCode(string $type, array $payload, int $index): string
     {
         return match ($type) {
             'studentRecords' => $payload['id'] ?? (string) $index,
@@ -145,3 +145,4 @@ class PjokMasterData
         };
     }
 }
+
