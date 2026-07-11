@@ -1,11 +1,11 @@
 const pageMeta = {
-  dashboard: ["Dashboard", "Ringkasan data evaluasi pembelajaran pendidikan jasmani olahraga dan kesehatan."],
-  userRole: ["User Role", "Pengaturan role dan akses pengguna sistem."],
-  addUser: ["Add User", "Tambah akun pengguna baru ke dalam sistem."],
-  userList: ["User List", "Daftar akun pengguna yang sudah terdaftar."],
+  dashboard: ["Dasbor", "Ringkasan data evaluasi pembelajaran pendidikan jasmani olahraga dan kesehatan."],
+  userRole: ["Peran Pengguna", "Pengaturan peran dan akses pengguna sistem."],
+  addUser: ["Tambah Pengguna", "Tambah akun pengguna baru ke dalam sistem."],
+  userList: ["Daftar Pengguna", "Daftar akun pengguna yang sudah terdaftar."],
   teachers: ["Data Guru", "Kelola identitas guru dan kepala sekolah."],
   classes: ["Data Kelas", "Kelola daftar kelas aktif dan data pendukung."],
-  audit: ["Audit Log", "Riwayat aktivitas sistem dan jejak perubahan data."],
+  audit: ["Log Aktivitas", "Riwayat aktivitas sistem dan jejak perubahan data."],
   settings: ["Pengaturan", "Tahun ajaran, semester, dan bobot nilai."],
   principals: ["Data Kepala Sekolah", "Kelola data kepala sekolah."],
   academicYears: ["Tahun Ajaran", "Kelola tahun ajaran aktif."],
@@ -13,7 +13,7 @@ const pageMeta = {
   classPromotion: ["Kenaikan Kelas", "Kelola proses kenaikan kelas siswa."],
   teacherAssignment: ["Penugasan Guru PJOK", "Atur guru PJOK penanggung jawab setiap kelas."],
   principalPeriod: ["Periode Kepala Sekolah", "Atur periode jabatan kepala sekolah."],
-  assessmentPlan: ["Rencana Asesmen", "Setup materi, tujuan, indikator, dan kriteria penilaian per pertemuan."],
+  assessmentPlan: ["Rencana Asesmen", "Atur materi, tujuan, indikator, dan kriteria penilaian per pertemuan."],
   criteriaRecap: ["Rekap Kriteria Penilaian", "Kriteria penilaian per pertemuan dan semester."],
 };
 

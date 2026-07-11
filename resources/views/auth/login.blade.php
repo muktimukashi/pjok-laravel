@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Masuk</title>
     <link rel="stylesheet" href="{{ asset('assets/style.css') }}">
 </head>
 <body class="login-page">
@@ -29,14 +29,15 @@
                 <input id="email" name="email" type="email" required>
             </div>
             <div class="field">
-                <label for="password">Password</label>
+                <label for="password">Kata Sandi</label>
                 <input id="password" name="password" type="password" required>
             </div>
             <div class="field">
                 <label><input type="checkbox" name="remember"> Remember me</label>
             </div>
-            <button class="btn btn-primary btn-large" type="submit">Login</button>
+            <button class="btn btn-primary btn-large" type="submit">Masuk</button>
         </form>
     </div>
 </body>
 </html>
+

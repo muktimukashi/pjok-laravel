@@ -1,4 +1,4 @@
-function renderDashboardContent() {
+function renderDasborContent() {
   const dashboardContent = document.getElementById("dashboardContent");
   if (!dashboardContent) return;
 
@@ -14,7 +14,7 @@ function renderDashboardContent() {
     <div class="card" style="margin-top:18px;">
       <div class="section-head">
         <div>
-          <h3>Dashboard Admin</h3>
+          <h3>Dasbor Admin</h3>
           <p>Grafik ringkasan master data dan akademik.</p>
         </div>
       </div>
@@ -26,7 +26,7 @@ function renderDashboardContent() {
 
   const studentSummary = `
     <div class="card" style="margin-top:18px;">
-      <div class="section-head"><div><h3>Dashboard Siswa</h3><p>Ringkasan tahun, semester, dan nilai total semester aktif.</p></div><button class="btn btn-soft btn-sm" onclick="goTo('recap')">Link Rekap</button></div>
+      <div class="section-head"><div><h3>Dasbor Siswa</h3><p>Ringkasan tahun, semester, dan nilai total semester aktif.</p></div><button class="btn btn-soft btn-sm" onclick="goTo('recap')">Buka Rekap</button></div>
       <div class="student-score-grid">
         <div class="student-score-box"><span>Tahun Penilaian</span><strong>${appState.activeStudent ? appState.activeStudent.year : "-"}</strong></div>
         <div class="student-score-box"><span>Semester</span><strong>${appState.activeStudent ? appState.activeStudent.semester : "-"}</strong></div>
@@ -89,15 +89,15 @@ function renderDashboardContent() {
   const superadminSummary = `
     <div class="grid stats-grid" style="margin-top:18px;">
       <div class="card stat-card"><div><h3>Total Akun</h3><strong>5</strong><small>Akun aktif</small></div><div class="icon-box bg-sky">U</div></div>
-      <div class="card stat-card"><div><h3>Role Tersedia</h3><strong>5</strong><small>Superadmin, Admin, Guru, Kepsek, Siswa</small></div><div class="icon-box bg-green">R</div></div>
+      <div class="card stat-card"><div><h3>Peran Tersedia</h3><strong>5</strong><small>Superadmin, Admin, Guru, Kepsek, Siswa</small></div><div class="icon-box bg-green">R</div></div>
       <div class="card stat-card"><div><h3>Log Aktivitas</h3><strong>${auditLogRecords.length}</strong><small>Riwayat sistem</small></div><div class="icon-box bg-yellow">L</div></div>
       <div class="card stat-card"><div><h3>Status Sistem</h3><strong>Siap</strong><small>Monitoring akses aktif</small></div><div class="icon-box bg-purple">S</div></div>
     </div>
     <div class="grid quick-actions" style="margin-top:18px;">
-      <div class="action-card" onclick="goTo('userRole')"><div class="icon-box bg-sky">R</div><strong>User Role</strong><span>Kelola role dan hak akses pengguna.</span></div>
-      <div class="action-card" onclick="goTo('addUser')"><div class="icon-box bg-green">+</div><strong>Add User</strong><span>Tambahkan akun baru untuk guru, kepsek, atau siswa.</span></div>
-      <div class="action-card" onclick="goTo('userList')"><div class="icon-box bg-purple">U</div><strong>User List</strong><span>Lihat, edit, reset, dan hapus akun pengguna.</span></div>
-      <div class="action-card" onclick="goTo('audit')"><div class="icon-box bg-yellow">L</div><strong>Audit Log</strong><span>Lihat jejak aktivitas sistem dan perubahan data.</span></div>
+      <div class="action-card" onclick="goTo('userRole')"><div class="icon-box bg-sky">R</div><strong>Peran Pengguna</strong><span>Kelola peran dan hak akses pengguna.</span></div>
+      <div class="action-card" onclick="goTo('addUser')"><div class="icon-box bg-green">+</div><strong>Tambah Pengguna</strong><span>Tambahkan akun baru untuk guru, kepsek, atau siswa.</span></div>
+      <div class="action-card" onclick="goTo('userList')"><div class="icon-box bg-purple">U</div><strong>Daftar Pengguna</strong><span>Lihat, edit, reset, dan hapus akun pengguna.</span></div>
+      <div class="action-card" onclick="goTo('audit')"><div class="icon-box bg-yellow">L</div><strong>Log Aktivitas</strong><span>Lihat jejak aktivitas sistem dan perubahan data.</span></div>
     </div>
   `;
 

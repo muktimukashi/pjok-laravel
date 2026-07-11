@@ -7,10 +7,10 @@ const roleMenus = {
 };
 
 const auditLogRecords = [
-  { time: "2026-06-03 08:15", user: "superadmin", role: "Superadmin", action: "Login", page: "Dashboard", detail: "Masuk ke aplikasi dengan akses penuh." },
+  { time: "2026-06-03 08:15", user: "superadmin", role: "Superadmin", action: "Login", page: "Dasbor", detail: "Masuk ke aplikasi dengan akses penuh." },
   { time: "2026-06-03 08:20", user: "admin", role: "Admin", action: "Tambah Data Guru", page: "Data Guru", detail: "Menambahkan guru PJOK baru ke master data." },
   { time: "2026-06-03 09:05", user: "guru", role: "Guru PJOK", action: "Input Asesmen", page: "Asesmen Kognitif", detail: "Mengisi nilai siswa kelas 5A pertemuan 1." },
-  { time: "2026-06-03 09:40", user: "kepsek", role: "Kepala Sekolah", action: "Lihat Dashboard", page: "Dashboard", detail: "Membuka monitoring hasil penilaian per kelas." }
+  { time: "2026-06-03 09:40", user: "kepsek", role: "Kepala Sekolah", action: "Lihat Dasbor", page: "Dasbor", detail: "Membuka monitoring hasil penilaian per kelas." }
 ];
 
 const assessmentData = {

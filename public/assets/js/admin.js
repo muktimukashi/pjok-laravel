@@ -40,7 +40,7 @@ function renderAdminTable(type) {
   tbody.innerHTML = rows.length ? rows.map(({ record, index }, rowIndex) => {
     const number = (page - 1) * 10 + rowIndex + 1;
     const idValue = type === "student" ? record.id : record.nip;
-    return `<tr><td>${number}</td><td>${idValue}</td><td>${record.name}</td><td>${record.gender || "-"}</td><td>${record.email || "-"}</td><td>${badgeStatus(record.status)}</td><td><button class="btn btn-soft btn-sm" data-admin-detail="${type}:${index}">Detail</button> <button class="btn btn-outline btn-sm" data-admin-edit="${type}:${index}">Edit</button> <button class="btn btn-red btn-sm" data-admin-delete="${type}:${index}">Hapus</button></td></tr>`;
+    return `<tr><td>${number}</td><td>${idValue}</td><td>${record.name}</td><td>${record.gender || "-"}</td><td>${record.email || "-"}</td><td>${badgeStatus(record.status)}</td><td><button class="btn btn-soft btn-sm" data-admin-detail="${type}:${index}">Rincian</button> <button class="btn btn-outline btn-sm" data-admin-edit="${type}:${index}">Ubah</button> <button class="btn btn-red btn-sm" data-admin-delete="${type}:${index}">Hapus</button></td></tr>`;
   }).join("") : `<tr><td colspan="7">Data belum ditemukan.</td></tr>`;
   renderAdminPagination(type, filtered.length);
 }
@@ -48,7 +48,7 @@ function renderAdminTable(type) {
 function renderYearTable() {
   const tbody = document.getElementById("yearTableBody");
   if (!tbody) return;
-  tbody.innerHTML = academicYearRecords.map((year, index) => `<tr><td>${index + 1}</td><td>${year.name}</td><td>${badgeStatus(year.status)}</td><td><button class="btn btn-outline btn-sm" data-admin-edit="year:${index}">Edit</button> <button class="btn btn-red btn-sm" data-admin-delete="year:${index}">Hapus</button></td></tr>`).join("");
+  tbody.innerHTML = academicYearRecords.map((year, index) => `<tr><td>${index + 1}</td><td>${year.name}</td><td>${badgeStatus(year.status)}</td><td><button class="btn btn-outline btn-sm" data-admin-edit="year:${index}">Ubah</button> <button class="btn btn-red btn-sm" data-admin-delete="year:${index}">Hapus</button></td></tr>`).join("");
 }
 
 function ensurePlacementRecords() {
@@ -90,7 +90,7 @@ function renderPlacement() {
   placementPage = Math.min(placementPage, placementTotalPages);
   const placementRows = filteredPlacements.slice((placementPage - 1) * 10, placementPage * 10);
   const placementBody = document.getElementById("placementTableBody");
-  if (placementBody) placementBody.innerHTML = placementRows.length ? placementRows.map(({ item, index, student }) => `<tr><td>${student?.name || item.studentId}</td><td>${item.className}</td><td>${item.year}</td><td>${badgeStatus(item.status)}</td><td><button class="btn btn-outline btn-sm" data-placement-edit="${index}">Edit</button> <button class="btn btn-red btn-sm" data-placement-delete="${index}">Hapus</button></td></tr>`).join("") : `<tr><td colspan="5">Data penempatan tidak ditemukan.</td></tr>`;
+  if (placementBody) placementBody.innerHTML = placementRows.length ? placementRows.map(({ item, index, student }) => `<tr><td>${student?.name || item.studentId}</td><td>${item.className}</td><td>${item.year}</td><td>${badgeStatus(item.status)}</td><td><button class="btn btn-outline btn-sm" data-placement-edit="${index}">Ubah</button> <button class="btn btn-red btn-sm" data-placement-delete="${index}">Hapus</button></td></tr>`).join("") : `<tr><td colspan="5">Data penempatan tidak ditemukan.</td></tr>`;
   renderSimplePagination("placementPagination", placementPage, filteredPlacements.length, "placement");
 }
 
@@ -157,7 +157,7 @@ function renderMasterLists() {
   const assessmentClassSelects = document.querySelectorAll(".assessment-class");
   const attendanceClassSelect = document.getElementById("attendanceClass");
   const studentClassFilter = document.getElementById("studentClassFilter");
-  if (classTableBody) classTableBody.innerHTML = classRecords.map((kelas, index) => `<tr><td>${index + 1}</td><td>${kelas.name}</td><td><button class="btn btn-outline btn-sm" type="button" data-edit-class="${index}">Edit</button> <button class="btn btn-red btn-sm" type="button" data-delete-class="${index}">Hapus</button></td></tr>`).join("");
+  if (classTableBody) classTableBody.innerHTML = classRecords.map((kelas, index) => `<tr><td>${index + 1}</td><td>${kelas.name}</td><td><button class="btn btn-outline btn-sm" type="button" data-edit-class="${index}">Ubah</button> <button class="btn btn-red btn-sm" type="button" data-delete-class="${index}">Hapus</button></td></tr>`).join("");
   const classOptions = classRecords.map((kelas) => `<option>${kelas.name}</option>`).join("");
   assessmentClassSelects.forEach((select) => { const current = select.value; select.innerHTML = classOptions; if (current) select.value = current; });
   if (attendanceClassSelect) { const current = attendanceClassSelect.value; attendanceClassSelect.innerHTML = classOptions; if (current) attendanceClassSelect.value = current; }

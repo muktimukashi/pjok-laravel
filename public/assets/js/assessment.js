@@ -523,7 +523,7 @@ function renderAssessmentPlanTable() {
             <td>${record.meeting}</td>
             <td>${record.aspect}</td>
             <td>${record.materi || "-"}</td>
-            <td><button class="btn btn-outline btn-sm" type="button" data-load-plan="${index}">Edit</button> <button class="btn btn-red btn-sm" type="button" data-delete-plan="${index}">Hapus</button></td>
+            <td><button class="btn btn-outline btn-sm" type="button" data-load-plan="${index}">Ubah</button> <button class="btn btn-red btn-sm" type="button" data-delete-plan="${index}">Hapus</button></td>
           </tr>
         `)
         .join("")

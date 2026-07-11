@@ -23,12 +23,12 @@
       </div>
 
       <div class="menu-label">Menu Utama</div>
-      <div class="menu-item active" data-page="dashboard">Dashboard</div>
+      <div class="menu-item active" data-page="dashboard">Dasbor</div>
       @if($currentRole === 'superadmin')
-      <div class="menu-item superadmin-menu hidden" data-page="userRole">User Role</div>
-      <div class="menu-item superadmin-menu hidden" data-page="addUser">Add User</div>
-      <div class="menu-item superadmin-menu hidden" data-page="userList">User List</div>
-      <div class="menu-item superadmin-menu hidden" data-page="audit">Audit Log</div>
+      <div class="menu-item superadmin-menu hidden" data-page="userRole">Peran Pengguna</div>
+      <div class="menu-item superadmin-menu hidden" data-page="addUser">Tambah Pengguna</div>
+      <div class="menu-item superadmin-menu hidden" data-page="userList">Daftar Pengguna</div>
+      <div class="menu-item superadmin-menu hidden" data-page="audit">Log Aktivitas</div>
       @endif
       @if($currentRole === 'guru')
       <div class="menu-item guru-menu hidden" data-page="attendance">Absensi Siswa</div>
@@ -65,7 +65,7 @@
         <div style="display:flex; align-items:center; gap:14px;">
           <button id="mobileToggle" class="mobile-toggle" onclick="toggleSidebar()" aria-label="Buka menu" aria-expanded="false">&#9776;</button>
           <div class="page-title">
-            <h2 id="pageTitle">Dashboard</h2>
+            <h2 id="pageTitle">Dasbor</h2>
             <p id="pageDesc">Ringkasan data asesmen digital PJOK semester aktif.</p>
           </div>
         </div>
@@ -94,12 +94,12 @@
       <section id="userRole" class="page">
         <div class="card">
           <div class="section-head">
-            <div><h3>User Role</h3><p>Atur role dan status akses pengguna sistem.</p></div>
-            <button class="btn btn-primary" type="button" data-user-role-save>Simpan Role</button>
+            <div><h3>Peran Pengguna</h3><p>Atur role dan status akses pengguna sistem.</p></div>
+            <button class="btn btn-primary" type="button" data-user-role-save>Simpan Peran</button>
           </div>
           <div class="grid form-grid">
             <div class="field"><label>Pilih User</label><select id="roleUserSelect"></select></div>
-            <div class="field"><label>Role</label><select id="roleUserRole"><option value="superadmin">Superadmin</option><option value="admin">Admin</option><option value="guru">Guru PJOK</option><option value="kepsek">Kepala Sekolah</option><option value="siswa">Siswa</option></select></div>
+            <div class="field"><label>Peran</label><select id="roleUserRole"><option value="superadmin">Superadmin</option><option value="admin">Admin</option><option value="guru">Guru PJOK</option><option value="kepsek">Kepala Sekolah</option><option value="siswa">Siswa</option></select></div>
             <div class="field"><label>Status Akses</label><select id="roleUserStatus"><option>Aktif</option><option>Nonaktif</option></select></div>
           </div>
         </div>
@@ -108,16 +108,16 @@
       <section id="addUser" class="page">
         <div class="card">
           <div class="section-head">
-            <div><h3>Add User</h3><p>Tambah akun baru untuk admin, guru, kepala sekolah, atau siswa.</p></div>
+            <div><h3>Tambah Pengguna</h3><p>Tambah akun baru untuk admin, guru, kepala sekolah, atau siswa.</p></div>
             <button class="btn btn-primary" type="button" data-user-save>Tambah User</button>
           </div>
           <div class="grid form-grid">
             <input id="userFormId" type="hidden" />
             <div class="field"><label>Nama Lengkap</label><input id="userName" placeholder="Nama pengguna" /></div>
             <div class="field"><label>Email</label><input id="userEmail" type="email" placeholder="email@sekolah.id" /></div>
-            <div class="field"><label>Role</label><select id="userRole"><option value="admin">Admin</option><option value="guru">Guru PJOK</option><option value="kepsek">Kepala Sekolah</option><option value="siswa">Siswa</option><option value="superadmin">Superadmin</option></select></div>
+            <div class="field"><label>Peran</label><select id="userRole"><option value="admin">Admin</option><option value="guru">Guru PJOK</option><option value="kepsek">Kepala Sekolah</option><option value="siswa">Siswa</option><option value="superadmin">Superadmin</option></select></div>
             <div class="field"><label>Status</label><select id="userStatus"><option>Aktif</option><option>Nonaktif</option></select></div>
-            <div class="field"><label>Password</label><input id="userPassword" type="password" placeholder="Minimal 6 karakter" /></div>
+            <div class="field"><label>Kata Sandi</label><input id="userKata Sandi" type="password" placeholder="Minimal 6 karakter" /></div>
           </div>
         </div>
       </section>
@@ -125,13 +125,13 @@
       <section id="userList" class="page">
         <div class="card">
           <div class="section-head">
-            <div><h3>User List</h3><p>Daftar akun pengguna yang terdaftar di sistem.</p></div>
-            <button class="btn btn-soft" type="button" data-user-refresh>Refresh</button>
+            <div><h3>Daftar Pengguna</h3><p>Daftar akun pengguna yang terdaftar di sistem.</p></div>
+            <button class="btn btn-soft" type="button" data-user-refresh>Muat Ulang</button>
           </div>
           <div class="table-wrap">
             <table>
               <thead>
-                <tr><th>No</th><th>Nama</th><th>Email</th><th>Role</th><th>Status</th><th>Aksi</th></tr>
+                <tr><th>No</th><th>Nama</th><th>Email</th><th>Peran</th><th>Status</th><th>Aksi</th></tr>
               </thead>
               <tbody id="userTableBody"></tbody>
             </table>
@@ -142,7 +142,7 @@
         <div class="card admin-data-page">
           <div class="section-head"><div><h3>Data Guru</h3><p>Kelola data guru aktif.</p></div><button class="btn btn-primary" type="button" data-admin-new="teacher">Tambah Guru</button></div>
           <div id="teacherForm" class="master-form hidden"><div class="grid form-grid"><div class="field"><label>NIP</label><input id="teacherNip" /></div><div class="field"><label>Nama Lengkap</label><input id="teacherName" /></div><div class="field"><label>Jenis Kelamin</label><select id="teacherGender"><option>Laki-laki</option><option>Perempuan</option></select></div><div class="field"><label>Email</label><input id="teacherEmail" type="email" /></div><div class="field"><label>Status</label><select id="teacherStatus"><option>Aktif</option><option>Nonaktif</option></select></div></div><div class="form-actions-right"><button class="btn btn-soft" type="button" data-admin-close="teacherForm">Tutup</button><button class="btn btn-primary" type="button" data-admin-save="teacher">Simpan Guru</button></div></div>
-          <div class="admin-toolbar"><input id="teacherSearch" placeholder="Search guru..." data-admin-filter="teacher" /><select id="teacherStatusFilter" data-admin-filter="teacher"><option value="">Semua Status</option><option>Aktif</option><option>Nonaktif</option></select></div>
+          <div class="admin-toolbar"><input id="teacherSearch" placeholder="Cari guru..." data-admin-filter="teacher" /><select id="teacherStatusFilter" data-admin-filter="teacher"><option value="">Semua Status</option><option>Aktif</option><option>Nonaktif</option></select></div>
           <div class="table-wrap"><table><thead><tr><th>No</th><th>NIP</th><th>Nama Lengkap</th><th>Jenis Kelamin</th><th>Email</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="teacherTableBody"></tbody></table></div><div id="teacherPagination" class="pagination-bar"></div>
         </div>
       </section>
@@ -151,7 +151,7 @@
         <div class="card admin-data-page">
           <div class="section-head"><div><h3>Data Kepala Sekolah</h3><p>Kelola data kepala sekolah.</p></div><button class="btn btn-primary" type="button" data-admin-new="principal">Tambah Kepala Sekolah</button></div>
           <div id="principalForm" class="master-form hidden"><div class="grid form-grid"><div class="field"><label>NIP</label><input id="principalNip" /></div><div class="field"><label>Nama Lengkap</label><input id="principalName" /></div><div class="field"><label>Jenis Kelamin</label><select id="principalGender"><option>Laki-laki</option><option>Perempuan</option></select></div><div class="field"><label>Email</label><input id="principalEmail" type="email" /></div><div class="field"><label>Status</label><select id="principalStatus"><option>Aktif</option><option>Nonaktif</option></select></div></div><div class="form-actions-right"><button class="btn btn-soft" type="button" data-admin-close="principalForm">Tutup</button><button class="btn btn-primary" type="button" data-admin-save="principal">Simpan Kepala Sekolah</button></div></div>
-          <div class="admin-toolbar"><input id="principalSearch" placeholder="Search kepala sekolah..." data-admin-filter="principal" /><select id="principalStatusFilter" data-admin-filter="principal"><option value="">Semua Status</option><option>Aktif</option><option>Nonaktif</option></select></div>
+          <div class="admin-toolbar"><input id="principalSearch" placeholder="Cari kepala sekolah..." data-admin-filter="principal" /><select id="principalStatusFilter" data-admin-filter="principal"><option value="">Semua Status</option><option>Aktif</option><option>Nonaktif</option></select></div>
           <div class="table-wrap"><table><thead><tr><th>No</th><th>NIP</th><th>Nama Lengkap</th><th>Jenis Kelamin</th><th>Email</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="principalTableBody"></tbody></table></div><div id="principalPagination" class="pagination-bar"></div>
         </div>
       </section>
@@ -176,7 +176,7 @@
         <div class="card admin-data-page">
           <div class="section-head"><div><h3>Data Siswa</h3><p>Kelola data siswa berdasarkan kelas dan status.</p></div><button class="btn btn-primary" type="button" data-admin-new="student">Tambah Siswa</button></div>
           <div id="studentForm" class="master-form hidden"><div class="grid form-grid"><div class="field"><label>NIS</label><input id="studentNisn" /></div><div class="field"><label>Nama Lengkap</label><input id="studentName" /></div><div class="field"><label>Jenis Kelamin</label><select id="studentGender"><option>Laki-laki</option><option>Perempuan</option></select></div><div class="field"><label>Email</label><input id="studentEmail" type="email" /></div><div class="field"><label>Status</label><select id="studentStatus"><option>Aktif</option><option>Nonaktif</option></select></div></div><div class="form-actions-right"><button class="btn btn-soft" type="button" data-admin-close="studentForm">Tutup</button><button class="btn btn-primary" type="button" data-admin-save="student">Simpan Siswa</button></div></div>
-          <div class="admin-toolbar"><input id="studentSearch" placeholder="Search siswa..." data-admin-filter="student" /><select id="studentClassFilter" data-admin-filter="student"><option value="">Semua Kelas</option></select><select id="studentStatusFilter" data-admin-filter="student"><option value="">Semua Status</option><option>Aktif</option><option>Nonaktif</option></select></div>
+          <div class="admin-toolbar"><input id="studentSearch" placeholder="Cari siswa..." data-admin-filter="student" /><select id="studentClassFilter" data-admin-filter="student"><option value="">Semua Kelas</option></select><select id="studentStatusFilter" data-admin-filter="student"><option value="">Semua Status</option><option>Aktif</option><option>Nonaktif</option></select></div>
           <div class="table-wrap"><table><thead><tr><th>No</th><th>NIS</th><th>Nama Lengkap</th><th>Jenis Kelamin</th><th>Email</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="studentTableBody"></tbody></table></div><div id="studentPagination" class="pagination-bar"></div>
         </div>
       </section>
@@ -184,13 +184,13 @@
       <section id="studentPlacement" class="page">
         <div class="card admin-data-page">
           <div class="section-head"><div><h3>Penempatan Siswa</h3><p>Pilih siswa, kelas, dan tahun ajaran untuk penempatan akademik.</p></div><button class="btn btn-primary" type="button" onclick="saveStudentPlacement()">Simpan Penempatan</button></div>
-          <div class="grid form-grid"><div class="field"><label>Tahun Ajaran</label><select id="placementYear"></select></div><div class="field"><label>Kelas</label><select id="placementClass"></select></div><div class="field"><label>Search Siswa</label><input id="placementStudentSearch" placeholder="Cari nama atau NISN..." /></div></div>
+          <div class="grid form-grid"><div class="field"><label>Tahun Ajaran</label><select id="placementYear"></select></div><div class="field"><label>Kelas</label><select id="placementClass"></select></div><div class="field"><label>Cari Siswa</label><input id="placementStudentSearch" placeholder="Cari nama atau NISN..." /></div></div>
           <div class="table-wrap"><table><thead><tr><th>Pilih</th><th>NISN</th><th>Nama Siswa</th><th>Status</th></tr></thead><tbody id="placementStudentBody"></tbody></table></div><div id="placementStudentPagination" class="pagination-bar"></div>
           <details class="assessment-detail-panel placement-list-panel">
             <summary>Daftar Penempatan</summary>
             <div class="placement-panel-content">
               <p class="panel-helper-text">Riwayat penempatan siswa per kelas dan tahun ajaran.</p>
-              <div class="admin-toolbar"><input id="placementSearch" placeholder="Search nama siswa, NISN, kelas..." /></div>
+              <div class="admin-toolbar"><input id="placementSearch" placeholder="Cari nama siswa, NISN, kelas..." /></div>
               <div class="table-wrap"><table><thead><tr><th>Nama Siswa</th><th>Kelas</th><th>Tahun Ajaran</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="placementTableBody"></tbody></table></div><div id="placementPagination" class="pagination-bar"></div>
             </div>
           </details>
@@ -229,7 +229,7 @@
           </div>
 
           <details id="assessmentPlanPanel" class="assessment-detail-panel">
-            <summary>Detail Rencana Asesmen</summary>
+            <summary>Rincian Rencana Asesmen</summary>
             <div class="grid form-grid">
               <div class="field"><label>Tahun Ajaran</label><select id="planYear"><option>2025/2026</option><option>2026/2027</option></select></div>
               <div class="field"><label>Semester</label><select id="planSemester"><option>Ganjil</option><option>Genap</option></select></div>
@@ -257,7 +257,7 @@
             <div><h3>Daftar Rencana Asesmen</h3><p>Filter atau cari data, lalu edit/hapus dari baris yang dipilih.</p></div>
           </div>
           <details class="plan-filter-panel">
-            <summary>Filter & Search</summary>
+            <summary>Filter dan Pencarian</summary>
             <div class="grid plan-filter-grid">
               <div class="field"><label>Tahun</label><select id="planFilterYear"><option value="">Semua Tahun</option></select></div>
               <div class="field"><label>Semester</label><select id="planFilterSemester"><option value="">Semua Semester</option><option>Ganjil</option><option>Genap</option></select></div>
@@ -303,7 +303,7 @@
             </table>
           </div>
           <div class="form-actions-right">
-            <button class="btn btn-soft">Back</button>
+            <button class="btn btn-soft">Kembali</button>
             <button class="btn btn-primary" type="button">Simpan</button>
           </div>
         </div>
@@ -311,9 +311,9 @@
 
       <section id="cognitive" class="page assessment-page" data-type="Kognitif">
         <div class="card assessment-card">
-          <div class="section-head"><div><h3>Asesmen Kognitif</h3><p>Pilih tahun, semester, kelas, dan pertemuan. Detail otomatis dari Rencana Asesmen.</p></div><button class="btn btn-primary" type="button" data-save-assessment>Simpan</button></div>
+          <div class="section-head"><div><h3>Asesmen Kognitif</h3><p>Pilih tahun, semester, kelas, dan pertemuan. Rincian otomatis dari Rencana Asesmen.</p></div><button class="btn btn-primary" type="button" data-save-assessment>Simpan</button></div>
           <details class="assessment-detail-panel" open>
-            <summary>Detail Asesmen</summary>
+            <summary>Rincian Asesmen</summary>
             <div class="grid form-grid">
               <div class="field"><label>Tanggal</label><input id="cognitiveDate" type="date" /></div>
             <div class="field"><label>Tahun Ajaran</label><select class="assessment-year"><option>2025/2026</option><option>2026/2027</option></select></div>
@@ -343,16 +343,16 @@
             </table>
           </div>
           <div class="form-actions-right">
-            <button class="btn btn-soft">Back</button>
+            <button class="btn btn-soft">Kembali</button>
             <button class="btn btn-primary" type="button" data-save-assessment>Simpan</button>
           </div>
         </div>
       </section>
       <section id="affective" class="page assessment-page" data-type="Afektif">
         <div class="card assessment-card">
-          <div class="section-head"><div><h3>Asesmen Afektif</h3><p>Pilih tahun, semester, kelas, dan pertemuan. Detail otomatis dari Rencana Asesmen.</p></div><button class="btn btn-primary" type="button" data-save-assessment>Simpan</button></div>
+          <div class="section-head"><div><h3>Asesmen Afektif</h3><p>Pilih tahun, semester, kelas, dan pertemuan. Rincian otomatis dari Rencana Asesmen.</p></div><button class="btn btn-primary" type="button" data-save-assessment>Simpan</button></div>
           <details class="assessment-detail-panel" open>
-            <summary>Detail Asesmen</summary>
+            <summary>Rincian Asesmen</summary>
             <div class="grid form-grid">
               <div class="field"><label>Tanggal</label><input id="affectiveDate" type="date" /></div>
             <div class="field"><label>Tahun Ajaran</label><select class="assessment-year"><option>2025/2026</option><option>2026/2027</option></select></div>
@@ -382,16 +382,16 @@
             </table>
           </div>
           <div class="form-actions-right">
-            <button class="btn btn-soft">Back</button>
+            <button class="btn btn-soft">Kembali</button>
             <button class="btn btn-primary" type="button" data-save-assessment>Simpan</button>
           </div>
         </div>
       </section>
       <section id="psychomotor" class="page assessment-page" data-type="Psikomotor">
         <div class="card assessment-card">
-          <div class="section-head"><div><h3>Asesmen Psikomotor</h3><p>Pilih tahun, semester, kelas, dan pertemuan. Detail otomatis dari Rencana Asesmen.</p></div><button class="btn btn-primary" type="button" data-save-assessment>Simpan</button></div>
+          <div class="section-head"><div><h3>Asesmen Psikomotor</h3><p>Pilih tahun, semester, kelas, dan pertemuan. Rincian otomatis dari Rencana Asesmen.</p></div><button class="btn btn-primary" type="button" data-save-assessment>Simpan</button></div>
           <details class="assessment-detail-panel" open>
-            <summary>Detail Asesmen</summary>
+            <summary>Rincian Asesmen</summary>
             <div class="grid form-grid">
               <div class="field"><label>Tanggal</label><input id="psychomotorDate" type="date" /></div>
             <div class="field"><label>Tahun Ajaran</label><select class="assessment-year"><option>2025/2026</option><option>2026/2027</option></select></div>
@@ -421,7 +421,7 @@
             </table>
           </div>
           <div class="form-actions-right">
-            <button class="btn btn-soft">Back</button>
+            <button class="btn btn-soft">Kembali</button>
             <button class="btn btn-primary" type="button" data-save-assessment>Simpan</button>
           </div>
         </div>
@@ -440,12 +440,12 @@
             <div class="field"><label>Tahun Ajaran</label><select id="recapYearFilter"><option value="">Semua Tahun</option></select></div>
             <div class="field"><label>Semester</label><select id="recapSemesterFilter"><option value="">Semua Semester</option><option>Ganjil</option><option>Genap</option></select></div>
             <div class="field"><label>Jenis Rekap</label><select id="recapTypeFilter"><option value="final">Nilai Akhir</option><option value="attendance">Absensi</option><option value="affective">Afektif</option><option value="cognitive">Kognitif</option><option value="psychomotor">Psikomotor</option></select></div>
-            <div class="field"><label>Aksi</label><button class="btn btn-primary" type="button" onclick="exportRecapExcel()">Download Excel</button></div>
+            <div class="field"><label>Aksi</label><button class="btn btn-primary" type="button" onclick="exportRecapExcel()">Unduh Excel</button></div>
           </div>
           <div class="recap-preview card-soft">
             <div class="section-head">
               <div>
-                <h4>Preview Rekap</h4>
+                <h4>Pratinjau Rekap</h4>
                 <p>Data mengikuti filter yang dipilih.</p>
               </div>
             </div>
@@ -467,8 +467,8 @@
               <p>Daftar kriteria penilaian setiap pertemuan dan semester.</p>
             </div>
             <div style="display:flex; gap:10px; flex-wrap:wrap;">
-              <button class="btn btn-soft btn-sm" onclick="renderCriteriaRecapTable()">Refresh</button>
-              <button class="btn btn-primary btn-sm" onclick="exportCriteriaRecapExcel()">Export Excel</button>
+              <button class="btn btn-soft btn-sm" onclick="renderCriteriaRecapTable()">Muat Ulang</button>
+              <button class="btn btn-primary btn-sm" onclick="exportCriteriaRecapExcel()">Ekspor Excel</button>
             </div>
           </div>
           <div class="grid criteria-filter-grid">
@@ -508,10 +508,10 @@
         <div class="card">
           <div class="section-head">
             <div>
-              <h3>Audit Log</h3>
+              <h3>Log Aktivitas</h3>
               <p>Riwayat aktivitas sistem, termasuk login, tambah data, dan pembukaan rekap.</p>
             </div>
-            <button class="btn btn-soft">Refresh</button>
+            <button class="btn btn-soft">Muat Ulang</button>
           </div>
           <div class="table-wrap">
             <table>
@@ -520,10 +520,10 @@
                   <th>No</th>
                   <th>Waktu</th>
                   <th>User</th>
-                  <th>Role</th>
+                  <th>Peran</th>
                   <th>Aksi</th>
                   <th>Menu</th>
-                  <th>Detail</th>
+                  <th>Rincian</th>
                 </tr>
               </thead>
               <tbody id="auditTableBody"></tbody>

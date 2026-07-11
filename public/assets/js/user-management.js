@@ -128,7 +128,7 @@ function renderUserTable() {
       <td>${userRoleLabels[user.role] || user.role}</td>
       <td>${badgeStatus(user.status)}</td>
       <td>
-        <button class="btn btn-outline btn-sm" type="button" data-user-edit="${index}">Edit</button>
+        <button class="btn btn-outline btn-sm" type="button" data-user-edit="${index}">Ubah</button>
         <button class="btn btn-red btn-sm" type="button" data-user-delete="${index}">Hapus</button>
       </td>
     </tr>`).join('') : '<tr><td colspan="6">Data user belum tersedia.</td></tr>';
@@ -171,3 +171,4 @@ document.addEventListener('click', async (event) => {
 document.addEventListener('change', (event) => {
   if (event.target.matches('#roleUserSelect')) syncRoleEditorFromSelectedUser();
 });
+
