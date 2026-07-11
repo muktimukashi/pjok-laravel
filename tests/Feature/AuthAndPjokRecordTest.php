@@ -73,11 +73,10 @@ class AuthAndPjokRecordTest extends TestCase
         ]);
 
         $response->assertOk();
-        $this->assertDatabaseHas('pjok_records', [
-            'type' => 'classRecords',
-            'code' => 'Kelas 1A',
+        $this->assertDatabaseHas('classes', [
+            'name' => 'Kelas 1A',
         ]);
-        $this->assertDatabaseCount('pjok_records', 2);
+        $this->assertDatabaseCount('classes', 2);
     }
 }
 

@@ -6,7 +6,6 @@ use App\Http\Requests\StorePjokRecordRequest;
 use App\Models\PjokRecord;
 use App\Support\PjokMasterData;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class PjokRecordController extends Controller
@@ -45,22 +44,8 @@ class PjokRecordController extends Controller
 
         abort_unless(array_key_exists($validated['type'], PjokMasterData::defaults()), 422, 'Tipe data master tidak dikenal.');
 
-        DB::transaction(function () use ($validated): void {
-            PjokRecord::query()->where('type', $validated['type'])->delete();
-
-            foreach (array_values($validated['records']) as $index => $payload) {
-                $code = PjokMasterData::recordCode($validated['type'], $payload, $index);
-
-                PjokRecord::query()->create([
-                    'type' => $validated['type'],
-                    'code' => $code,
-                    'name' => $payload['name'] ?? $payload['className'] ?? $payload['materi'] ?? $code,
-                    'payload' => $payload,
-                ]);
-            }
-        });
+        PjokMasterData::syncRecords($validated['type'], $validated['records']);
 
         return response()->json(['ok' => true]);
     }
 }
-

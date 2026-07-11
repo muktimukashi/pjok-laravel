@@ -2,46 +2,268 @@
 
 namespace App\Support;
 
+use App\Models\AcademicYear;
+use App\Models\Assessment;
 use App\Models\PjokRecord;
+use App\Models\SchoolClass;
+use App\Models\Student;
+use App\Models\Teacher;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class PjokMasterData
 {
     public static function load(): array
     {
         $defaults = self::defaults();
-        $data = [];
 
-        foreach (array_keys($defaults) as $type) {
-            $records = PjokRecord::query()
-                ->where('type', $type)
-                ->orderBy('id')
-                ->get()
-                ->map(fn (PjokRecord $record) => $record->payload ?: [])
-                ->filter()
-                ->values()
-                ->all();
+        return [
+            'classRecords' => self::loadClasses($defaults['classRecords']),
+            'studentRecords' => self::loadStudents($defaults['studentRecords']),
+            'teacherRecords' => self::loadTeachers('Guru PJOK', $defaults['teacherRecords']),
+            'principalRecords' => self::loadTeachers('Kepala Sekolah', $defaults['principalRecords']),
+            'academicYearRecords' => self::loadAcademicYears($defaults['academicYearRecords']),
+            'teacherAssignmentRecords' => self::loadGeneric('teacherAssignmentRecords', $defaults['teacherAssignmentRecords']),
+            'principalPeriodRecords' => self::loadGeneric('principalPeriodRecords', $defaults['principalPeriodRecords']),
+            'placementRecords' => self::loadGeneric('placementRecords', $defaults['placementRecords']),
+            'criteriaRecords' => self::loadGeneric('criteriaRecords', $defaults['criteriaRecords']),
+            'assessmentRecords' => self::loadAssessments($defaults['assessmentRecords']),
+        ];
+    }
 
-            $data[$type] = count($records) > 0 ? $records : $defaults[$type];
-        }
-
-        return $data;
+    public static function syncRecords(string $type, array $records): void
+    {
+        match ($type) {
+            'classRecords' => self::syncClasses($records),
+            'studentRecords' => self::syncStudents($records),
+            'teacherRecords' => self::syncTeachers('Guru PJOK', $records),
+            'principalRecords' => self::syncTeachers('Kepala Sekolah', $records),
+            'academicYearRecords' => self::syncAcademicYears($records),
+            'assessmentRecords' => self::syncAssessments($records),
+            default => self::syncGeneric($type, $records),
+        };
     }
 
     public static function seedDefaults(): void
     {
         foreach (self::defaults() as $type => $records) {
-            foreach ($records as $index => $payload) {
-                $code = self::recordCode($type, $payload, $index);
-
-                PjokRecord::query()->updateOrCreate(
-                    ['type' => $type, 'code' => $code],
-                    [
-                        'name' => $payload['name'] ?? $payload['className'] ?? $payload['materi'] ?? $code,
-                        'payload' => $payload,
-                    ],
-                );
-            }
+            self::syncRecords($type, $records);
         }
+    }
+
+    private static function loadClasses(array $fallback): array
+    {
+        if (! Schema::hasTable('classes')) return $fallback;
+
+        $records = SchoolClass::query()->orderBy('name')->get()->map(fn (SchoolClass $record) => [
+            'name' => $record->name,
+        ])->values()->all();
+
+        return $records ?: $fallback;
+    }
+
+    private static function loadAcademicYears(array $fallback): array
+    {
+        if (! Schema::hasTable('academic_years')) return $fallback;
+
+        $records = AcademicYear::query()->orderBy('name')->get()->map(fn (AcademicYear $record) => [
+            'name' => $record->name,
+            'status' => $record->status,
+        ])->values()->all();
+
+        return $records ?: $fallback;
+    }
+
+    private static function loadStudents(array $fallback): array
+    {
+        if (! Schema::hasTable('students')) return $fallback;
+
+        $records = Student::query()->orderBy('name')->get()->map(fn (Student $student) => [
+            'id' => $student->student_id,
+            'name' => $student->name,
+            'gender' => $student->gender,
+            'email' => $student->email,
+            'status' => $student->status,
+            'className' => $student->class_name,
+            'year' => $student->year,
+            'semester' => $student->semester,
+            'attendance' => (int) $student->attendance,
+            'cognitive' => (float) $student->cognitive,
+            'affective' => (float) $student->affective,
+            'psychomotor' => (float) $student->psychomotor,
+            'finalScore' => (float) $student->final_score,
+            'predicate' => $student->predicate,
+            'predicateClass' => $student->predicate_class,
+        ])->values()->all();
+
+        return $records ?: $fallback;
+    }
+
+    private static function loadTeachers(string $role, array $fallback): array
+    {
+        if (! Schema::hasTable('teachers')) return $fallback;
+
+        $records = Teacher::query()->where('role', $role)->orderBy('name')->get()->map(fn (Teacher $teacher) => [
+            'nip' => $teacher->nip,
+            'name' => $teacher->name,
+            'gender' => $teacher->gender,
+            'email' => $teacher->email,
+            'status' => $teacher->status,
+            'role' => $teacher->role,
+        ])->values()->all();
+
+        return $records ?: $fallback;
+    }
+
+    private static function loadAssessments(array $fallback): array
+    {
+        if (! Schema::hasTable('assessments')) return $fallback;
+
+        $records = Assessment::query()->orderBy('year')->orderBy('semester')->orderBy('class_name')->orderBy('meeting')->get()->map(fn (Assessment $assessment) => [
+            'year' => $assessment->year,
+            'semester' => $assessment->semester,
+            'className' => $assessment->class_name,
+            'meeting' => $assessment->meeting,
+            'type' => $assessment->type,
+            'materi' => $assessment->materi,
+            'tujuan' => $assessment->tujuan,
+            'aspect' => $assessment->aspect,
+            'criteria' => $assessment->criteria ?: [],
+        ])->values()->all();
+
+        return $records ?: $fallback;
+    }
+
+    private static function loadGeneric(string $type, array $fallback): array
+    {
+        if (! Schema::hasTable('pjok_records')) return $fallback;
+
+        $records = PjokRecord::query()
+            ->where('type', $type)
+            ->orderBy('id')
+            ->get()
+            ->map(fn (PjokRecord $record) => $record->payload ?: [])
+            ->filter()
+            ->values()
+            ->all();
+
+        return $records ?: $fallback;
+    }
+
+    private static function syncClasses(array $records): void
+    {
+        if (! Schema::hasTable('classes')) return;
+
+        DB::transaction(function () use ($records): void {
+            SchoolClass::query()->delete();
+            foreach ($records as $record) {
+                if (! empty($record['name'])) SchoolClass::query()->create(['name' => $record['name']]);
+            }
+        });
+    }
+
+    private static function syncAcademicYears(array $records): void
+    {
+        if (! Schema::hasTable('academic_years')) return;
+
+        DB::transaction(function () use ($records): void {
+            AcademicYear::query()->delete();
+            foreach ($records as $record) {
+                if (! empty($record['name'])) AcademicYear::query()->create([
+                    'name' => $record['name'],
+                    'status' => $record['status'] ?? 'Aktif',
+                ]);
+            }
+        });
+    }
+
+    private static function syncStudents(array $records): void
+    {
+        if (! Schema::hasTable('students')) return;
+
+        DB::transaction(function () use ($records): void {
+            Student::query()->delete();
+            foreach ($records as $record) {
+                if (empty($record['id']) || empty($record['name'])) continue;
+                Student::query()->create([
+                    'student_id' => $record['id'],
+                    'name' => $record['name'],
+                    'gender' => $record['gender'] ?? null,
+                    'email' => $record['email'] ?? null,
+                    'status' => $record['status'] ?? 'Aktif',
+                    'class_name' => $record['className'] ?? null,
+                    'year' => $record['year'] ?? null,
+                    'semester' => $record['semester'] ?? null,
+                    'attendance' => (int) ($record['attendance'] ?? 0),
+                    'cognitive' => (float) ($record['cognitive'] ?? 0),
+                    'affective' => (float) ($record['affective'] ?? 0),
+                    'psychomotor' => (float) ($record['psychomotor'] ?? 0),
+                    'final_score' => (float) ($record['finalScore'] ?? 0),
+                    'predicate' => $record['predicate'] ?? null,
+                    'predicate_class' => $record['predicateClass'] ?? null,
+                ]);
+            }
+        });
+    }
+
+    private static function syncTeachers(string $role, array $records): void
+    {
+        if (! Schema::hasTable('teachers')) return;
+
+        DB::transaction(function () use ($role, $records): void {
+            Teacher::query()->where('role', $role)->delete();
+            foreach ($records as $record) {
+                if (empty($record['nip']) || empty($record['name'])) continue;
+                Teacher::query()->create([
+                    'nip' => $record['nip'],
+                    'name' => $record['name'],
+                    'gender' => $record['gender'] ?? null,
+                    'email' => $record['email'] ?? null,
+                    'status' => $record['status'] ?? 'Aktif',
+                    'role' => $role,
+                ]);
+            }
+        });
+    }
+
+    private static function syncAssessments(array $records): void
+    {
+        if (! Schema::hasTable('assessments')) return;
+
+        DB::transaction(function () use ($records): void {
+            Assessment::query()->delete();
+            foreach ($records as $record) {
+                Assessment::query()->create([
+                    'year' => $record['year'] ?? '2025/2026',
+                    'semester' => $record['semester'] ?? 'Ganjil',
+                    'class_name' => $record['className'] ?? '-',
+                    'meeting' => (string) ($record['meeting'] ?? '1'),
+                    'type' => $record['type'] ?? 'Afektif',
+                    'materi' => $record['materi'] ?? null,
+                    'tujuan' => $record['tujuan'] ?? null,
+                    'aspect' => $record['aspect'] ?? null,
+                    'criteria' => $record['criteria'] ?? [],
+                ]);
+            }
+        });
+    }
+
+    private static function syncGeneric(string $type, array $records): void
+    {
+        if (! Schema::hasTable('pjok_records')) return;
+
+        DB::transaction(function () use ($type, $records): void {
+            PjokRecord::query()->where('type', $type)->delete();
+            foreach (array_values($records) as $index => $payload) {
+                $code = self::recordCode($type, $payload, $index);
+                PjokRecord::query()->create([
+                    'type' => $type,
+                    'code' => $code,
+                    'name' => $payload['name'] ?? $payload['className'] ?? $payload['materi'] ?? $code,
+                    'payload' => $payload,
+                ]);
+            }
+        });
     }
 
     public static function defaults(): array
@@ -145,4 +367,3 @@ class PjokMasterData
         };
     }
 }
-
